@@ -44,10 +44,10 @@ npm install
 ### 2. Configure Environment Variables
 Copy `.env.example` to `.env` and update values:
 ```bash
-PORT=5000
+PORT=3000
 MONGODB_URI=mongodb://localhost:27017/chat-app
 JWT_SECRET=your_jwt_secret_key
-CLIENT_URL=http://localhost:3000
+CLIENT_URL=http://localhost:5173
 ```
 
 ### 3. Start the Server
@@ -55,7 +55,7 @@ CLIENT_URL=http://localhost:3000
 npm run dev
 ```
 
-Server will run on `http://localhost:5000`
+Server will run on `http://localhost:3000`
 
 ## Testing the Chat Application
 
@@ -68,7 +68,7 @@ Register/login as two different users to get their JWT tokens and user IDs.
 
 **Get or Create Conversation:**
 ```bash
-POST http://localhost:5000/api/chat/conversation/get-or-create
+POST http://localhost:3000/api/chat/conversation/get-or-create
 Headers: 
   - Authorization: Bearer <token_user1>
   - Content-Type: application/json
@@ -79,14 +79,14 @@ Body: {
 
 **Get All Conversations:**
 ```bash
-GET http://localhost:5000/api/chat/conversations
+GET http://localhost:3000/api/chat/conversations
 Headers:
   - Authorization: Bearer <token_user1>
 ```
 
 **Get Messages (requires conversationId from above):**
 ```bash
-GET http://localhost:5000/api/chat/conversation/<conversationId>/messages?page=1&limit=50
+GET http://localhost:3000/api/chat/conversation/<conversationId>/messages?page=1&limit=50
 Headers:
   - Authorization: Bearer <token_user1>
 ```
@@ -95,7 +95,7 @@ Headers:
 
 #### Connect to Socket.IO:
 ```javascript
-const socket = io('http://localhost:5000', {
+const socket = io('http://localhost:3000', {
   auth: {
     token: 'your_jwt_token_here'
   }
@@ -145,7 +145,7 @@ socket.on('messageReadStatusUpdated', (data) => {
 
 #### 1. Create Group:
 ```bash
-POST http://localhost:5000/api/chat/group/create
+POST http://localhost:3000/api/chat/group/create
 Headers:
   - Authorization: Bearer <token_user1>
   - Content-Type: application/json
@@ -158,7 +158,7 @@ Body: {
 
 #### 2. Get User's Groups:
 ```bash
-GET http://localhost:5000/api/chat/groups
+GET http://localhost:3000/api/chat/groups
 Headers:
   - Authorization: Bearer <token_user1>
 ```
@@ -181,7 +181,7 @@ socket.on('groupMessageReceived', (data) => {
 
 #### 4. Add User to Group:
 ```bash
-POST http://localhost:5000/api/chat/group/<groupId>/add-member
+POST http://localhost:3000/api/chat/group/<groupId>/add-member
 Headers:
   - Authorization: Bearer <token_admin>
 Body: {
@@ -191,7 +191,7 @@ Body: {
 
 #### 5. Remove User from Group:
 ```bash
-DELETE http://localhost:5000/api/chat/group/<groupId>/remove-member/<memberId>
+DELETE http://localhost:3000/api/chat/group/<groupId>/remove-member/<memberId>
 Headers:
   - Authorization: Bearer <token_admin>
 ```

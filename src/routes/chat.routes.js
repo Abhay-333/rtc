@@ -57,14 +57,29 @@ router.get('/conversations', protect, async (req, res, next) => {
   try {
     const userId = req.user.id;
 
-    const conversations = await ConversationModel.find({
-      participants: userId,
-    })
+    // fetch conversations and include lastMessage and unreadCount per conversation
+    const conversations = await ConversationModel.find({ participants: userId })
       .populate('participants', 'name email avatar isOnline lastSeen')
       .sort({ updatedAt: -1 });
 
+    const enriched = await Promise.all(conversations.map(async (conv) => {
+      const lastMsg = await MessageModel.findOne({ conversationId: conv._id }).sort({ createdAt: -1 }).populate('sender', 'name email avatar');
+      const unreadCount = await MessageModel.countDocuments({ conversationId: conv._id, deleted: { $ne: true }, readBy: { $nin: [userId] } });
+      return {
+        ...conv.toObject(),
+        lastMessage: lastMsg ? {
+          messageId: lastMsg._id,
+          text: lastMsg.deleted ? null : lastMsg.text,
+          sender: lastMsg.sender ? { _id: lastMsg.sender._id, name: lastMsg.sender.name } : null,
+          createdAt: lastMsg ? lastMsg.createdAt : null,
+          deleted: !!lastMsg?.deleted,
+        } : null,
+        unreadCount,
+      };
+    }));
+
     return res.status(200).json(
-      new ApiResponse(200, conversations, 'Conversations retrieved successfully')
+      new ApiResponse(200, enriched, 'Conversations retrieved successfully')
     );
   } catch (error) {
     next(error);

@@ -25,8 +25,8 @@ npm install socket.io http
 
 2. **Environment Variables** (add to .env)
 ```env
-PORT=5000
-CLIENT_URL=http://localhost:3000
+PORT=3000
+CLIENT_URL=http://localhost:5173
 JWT_SECRET=your_jwt_secret_key
 MONGODB_URI=your_mongodb_connection_string
 ```
@@ -128,7 +128,7 @@ Response: { success: true }
 
 #### Connect with Authentication
 ```javascript
-const socket = io('http://localhost:5000', {
+const socket = io('http://localhost:3000', {
   auth: {
     token: 'jwt_token_from_login'
   }
@@ -321,7 +321,7 @@ const ChatComponent = () => {
   useEffect(() => {
     // Connect to Socket.IO
     const token = localStorage.getItem('token'); // Get JWT token from localStorage
-    const newSocket = io('http://localhost:5000', {
+    const newSocket = io('http://localhost:3000', {
       auth: { token }
     });
 

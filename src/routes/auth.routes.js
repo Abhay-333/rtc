@@ -3,6 +3,7 @@ import express from 'express'
 import { loginController, registerController } from '../controllers/auth.controller.js'
 import protect from '../middlewares/auth.middleware.js'
 import { getMe } from '../controllers/auth.controller.js'
+import { getUsers } from '../controllers/auth.controller.js'
 
 
 
@@ -24,6 +25,8 @@ router.post('/register',registerController)
 router.post('/login',loginController)
 
 router.get('/me',protect,getMe)
+// Get list of users (protected)
+router.get('/users', protect, getUsers)
 
 
 // Export confiured router so it can be used in other files
