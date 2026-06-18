@@ -36,7 +36,6 @@ if (fs.existsSync(frontendBuildPath)) {
   console.log('Serving frontend from', frontendBuildPath);
   app.use((req, res, next) => {
     // Let API and socket routes proceed
-    if (req.path.startsWith('/api') || req.path.startsWith('/socket.io')) return next();
     return next();
   });
   app.use(express.static(frontendBuildPath));

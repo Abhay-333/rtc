@@ -19,7 +19,7 @@ export const registerService=async(data)=>{
   }
   // Check if the length of password field is less than 6 characters
   if (password.length < 6)
-    throw new ApiError(409, "Password should be atleast 3 characters long");
+    throw new ApiError(409, "Password should be atleast 6 characters long");
   // Check if user already exists with same email
   let isExisted = await UserModel.findOne({ email });
 
@@ -32,9 +32,6 @@ export const registerService=async(data)=>{
     email,
     password,
   });
-
-
-
 
   return {
     newUser
